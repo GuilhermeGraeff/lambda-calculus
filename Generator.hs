@@ -10,9 +10,9 @@ data Ty = TBool
         | TRecord [(String,Ty)]
         deriving (Show, Eq)
 
-genType :: Integer -> Gen Ty
-genType p = do t <- elements [genRecordType p, genTupleType p, genFunType p, genBasicType]
-             return (t)
+genType :: Gen Ty
+genType = do t <- elements [TBool, TNum]
+             return (TFun t t)
 
 
 -- genBasicTypes :: Gen Ty     
@@ -23,7 +23,7 @@ genRecordType :: Gen Ty
 genRecordType = do { t1 <- genTupleType
                    ; t2 <- genFunType
                    ; t3 <- genBasicType
-                   ; return (TRecord [("A", t1), ("B", t2), ("C", t3)]) }
+                   ; return (Record [('A', t1), ('B', t2), ('C', t3)]) }
 
 genTupleType :: Gen Ty
 genTupleType = do {  t1 <- genBasicType
