@@ -1,0 +1,92 @@
+TRecord [
+    ("A",TTuple [
+        TNum,TTuple [
+            TNum,
+            TRecord [
+                ("A",TRecord [
+                    ("A",TFun TBool TBool),
+                    ("B",TRecord [
+                        ("A",TBool),
+                        ("B",TNum),
+                        ("C",TNum)]),
+                    ("C",TTuple [
+                        TNum,
+                        TBool,
+                        TBool
+                    ])]),
+                ("B",TNum),
+                ("C",TTuple [
+                    TFun TNum TNum,
+                    TFun TBool TNum,
+                    TTuple [
+                        TBool,
+                        TNum,
+                        TBool
+                    ]
+                ])
+            ],
+            TTuple [
+                TRecord [
+                    ("A",TNum),
+                    ("B",TFun TNum TNum),
+                    ("C",TBool)
+                ],
+                TTuple [
+                    TTuple [
+                        TNum,
+                        TNum,
+                        TNum
+                    ],
+                    TRecord [
+                        ("A",TBool),
+                        ("B",TNum),
+                        ("C",TBool)],
+                    TBool
+                ],
+                TNum
+            ]
+        ],
+        TRecord [
+            ("A",TFun 
+                    (TFun 
+                        (TTuple [
+                            TBool,
+                            TNum,
+                            TBool
+                        ]) 
+                        (TFun TBool TNum)
+                    ) 
+                    (TFun 
+                        (TFun TBool TNum) 
+                        TBool
+                    )
+            ),
+            ("B",TBool),
+            ("C",TFun TBool TNum)
+        ]
+    ]),
+    ("B",TRecord 
+[("A",TFun (TFun TBool TBool) TNum),("B",TBool),("C",TNum)]),("C",TTuple 
+[TBool,TFun (TTuple 
+[TNum,TTuple 
+[TFun TNum TBool,TBool,TFun TNum TBool],TTuple 
+[TFun TNum TNum,TTuple 
+[TBool,TNum,TBool],TFun TBool TNum]]) (TTuple 
+[TRecord 
+[("A",TFun TNum TBool),("B",TFun TBool TBool),("C",TNum)],TRecord 
+[("A",TFun TNum TBool),("B",TFun TBool TBool),("C",TFun TNum TBool)],TTuple 
+[TTuple 
+[TNum,TNum,TBool],TNum,TFun TNum TNum]]),TRecord 
+[("A",TTuple 
+[TRecord 
+[("A",TFun TNum TNum),("B",TTuple 
+[TBool,TBool,TNum]),("C",TBool)],TRecord 
+[("A",TRecord 
+[("A",TNum),("B",TBool),("C",TBool)]),("B",TNum),("C",TNum)],TTuple 
+[TTuple 
+[TBool,TNum,TBool],TBool,TTuple 
+[TNum,TBool,TBool]]]),("B",TTuple 
+[TTuple 
+[TRecord 
+[("A",TNum),("B",TBool),("C",TBool)],TFun TNum TNum,TFun TNum TBool],TBool,TFun TBool (TTuple 
+[TBool,TBool,TBool])]),("C",TBool)]])]
