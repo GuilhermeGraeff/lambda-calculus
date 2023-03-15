@@ -4,21 +4,17 @@ import Test.QuickCheck
 
 import Lexer 
 
-
-
-
+-- Define: 
 maxConstuctSize :: Int 
 maxConstuctSize = 10
 
 nameList :: String
 nameList = "oiboivacaterneiro"
 
-
---        Depth -> max Size -> Árvore de Sintaxe Abstrata
+--        Depth -> Árvore de Sintaxe Abstrata Diricionada pelos tipos
 generator :: Int -> Gen Ty
 generator d = do g      <- genRandomType d
                  return g
-
 
 genRandomType :: Int -> Gen Ty
 genRandomType d = do s     <- genRandomNaturalSize
@@ -31,7 +27,6 @@ genRandomType d = do s     <- genRandomNaturalSize
                               else genBasicType
                      return t 
 
-
 -- Tipos que podem ser gerados: 
 
 genRecordTypeItem :: Int -> Gen (String, Ty)
@@ -43,7 +38,6 @@ genRecordType :: Int -> Int -> Gen Ty
 genRecordType d s = do t      <- vectorOf s (genRecordTypeItem d)
                        return (TRecord t)
 
-
 genTupleType :: Int -> Int -> Gen Ty
 genTupleType d s = do t      <- vectorOf s (genRandomType (d -1))
                       return (TTuple t)
@@ -52,12 +46,10 @@ genListType :: Int -> Int -> Gen Ty
 genListType d s = do t      <- genRandomType (d -1)
                      return (List t)
 
-
 genFunType :: Int -> Int -> Gen Ty
 genFunType d s = do t1     <- genRandomType (d - 1)
                     t2     <- genRandomType (d - 1)
                     return (TFun t1 t2)
-
 
 genBasicType :: Gen Ty
 genBasicType = do t <- elements [TBool, TNum]
@@ -67,11 +59,8 @@ genBasicType = do t <- elements [TBool, TNum]
 --     genRandomNaturalSize at most maxConstuctSize
 --     genRandomName from nameList
 
-
 genRandomNaturalSize :: Gen Int
 genRandomNaturalSize = choose(1,maxConstuctSize)
-                        
-
 
 genRandomName :: Gen String
 genRandomName = sublistOf (nameList)
