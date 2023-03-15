@@ -35,10 +35,18 @@ import Lexer
     '.'     { TokenDot }
     '{'     { TokenLBrack }
     '}'     { TokenRBrack }
+    '['     { TokenLSqBrack }
+    ']'     { TokenRSqBrack }
     fix     { TokenFix }
     letrec  { TokenLetRec }
     "=="    { TokenEq }
     '!'     { TokenNot }
+    List    { TokenList }
+    nil     { TokenNil }
+    cons    { TokenCons }
+    isnil   { TokenIsNil }
+    head    { TokenHead }
+    tail    { TokenTail }
 
 
 %nonassoc if then else
@@ -69,6 +77,11 @@ Exp     : true                          { BTrue }
         | letrec var ':' Type '=' Exp in Exp { Let $2 (Fix (Lam $2 $4 $6)) $8 }
         | Exp "==" Exp                  { Eq $1 $3 }
         | '!' Exp                       { Not $2 }
+        | nil '[' Type ']'              { Nil $3 }
+        | cons '[' Type ']' Exp Exp     { Cons $3 $5 $6 }
+        | isnil '[' Type ']' Exp        { IsNil $3 $5 }
+        | head '[' Type ']' Exp         { Head $3 $5 }
+        | tail '[' Type ']' Exp         { Tail $3 $5 }
 
 ExpList : Exp                           { [$1] }
         | Exp ',' ExpList               { $1 : $3 }
@@ -79,6 +92,7 @@ RecList : var '=' Exp                   { [($1,$3)] }
 Type    : Bool                          { TBool }
         | Number                        { TNum }
         | '(' Type "->" Type ')'        { TFun $2 $4 }
+        | List Type                     { List $2 }
 
 {
 

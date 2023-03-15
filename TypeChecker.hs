@@ -79,7 +79,32 @@ typeof ctx (Eq e1 e2) = case (typeof ctx e1, typeof ctx e2) of
                           _                  -> Nothing
 typeof ctx (Not e) = case (typeof ctx e) of 
                        (Just TBool) -> Just TBool 
-                       _            -> Nothing                                                  
+                       _            -> Nothing
+typeof ctx (Nil t) = Just (List t)
+typeof ctx (Cons t e1 e2) = case (typeof ctx e1, typeof ctx e2) of 
+                              (Just t1, Just (List t2)) -> if t1 == t2 then 
+                                                             Just (List t1)
+                                                           else 
+                                                             Nothing
+                              _                         -> Nothing
+typeof ctx (IsNil t e) = case typeof ctx e of 
+                           Just (List t') -> if t == t' then 
+                                               Just TBool
+                                             else 
+                                               Nothing 
+                           _               -> Nothing 
+typeof ctx (Head t e) = case typeof ctx e of 
+                          Just (List t') -> if t == t' then 
+                                               Just t
+                                             else 
+                                               Nothing 
+                          _               -> Nothing 
+typeof ctx (Tail t e) = case typeof ctx e of 
+                          Just (List t') -> if t == t' then 
+                                               Just (List t)
+                                             else 
+                                               Nothing 
+                          _               -> Nothing 
 
 
 typecheck :: Expr -> Expr 

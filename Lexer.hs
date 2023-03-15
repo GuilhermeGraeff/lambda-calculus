@@ -1,6 +1,7 @@
 module Lexer where
 
 import Data.Char
+import Data.List (intercalate)
 
 -- Type definitions
 
@@ -9,6 +10,7 @@ data Ty = TBool
         | TFun Ty Ty
         | TTuple [Ty]
         | TRecord [(String,Ty)]
+        | List Ty 
         deriving (Show, Eq)
 
 -- Expression definitions
@@ -34,7 +36,12 @@ data Expr = BTrue
           | Fix Expr 
           | Eq Expr Expr
           | Not Expr
-          deriving (Show, Eq)
+          | Nil Ty
+          | Cons Ty Expr Expr
+          | IsNil Ty Expr 
+          | Head Ty Expr 
+          | Tail Ty Expr
+          deriving Eq
 
 -- Token definitions
 
@@ -68,7 +75,28 @@ data Token = TokenTrue
            | TokenLetRec
            | TokenEq
            | TokenNot
+           | TokenList
+           | TokenNil
+           | TokenCons 
+           | TokenIsNil
+           | TokenHead
+           | TokenTail
+           | TokenLSqBrack
+           | TokenRSqBrack 
            deriving Show
+
+-- Compiling to concrete syntax
+
+instance Show Expr where 
+    show BTrue = "true"
+    show BFalse = "false"
+    show (Num n) = show n
+    show (Lam v t b) = "\\" ++ v ++ ":" ++ show t ++ " -> " ++ show b 
+    show (Tuple l) = "(" ++ intercalate ", " (map show l) ++ ")"
+    show (Record l) = "{" ++ intercalate ", " (map (\(k,p) -> k ++ " = " ++ show p) l) ++ "}"
+    show (Nil _) = "[]"
+    show (Cons _ e1 e2) = show e1 ++ ":" ++ show e2 
+
 
 -- Lexer functions
 
@@ -86,6 +114,8 @@ lexer (',':cs) = TokenComma : lexer cs
 lexer ('.':cs) = TokenDot : lexer cs
 lexer ('{':cs) = TokenLBrack : lexer cs 
 lexer ('}':cs) = TokenRBrack : lexer cs 
+lexer ('[':cs) = TokenLSqBrack : lexer cs 
+lexer (']':cs) = TokenRSqBrack : lexer cs 
 lexer ('!':cs) = TokenNot : lexer cs
 lexer ('\\':cs) = TokenLam : lexer cs
 lexer (c:cs) 
@@ -110,6 +140,12 @@ lexKW cs = case span isAlpha cs of
                 ("in", rest)     -> TokenIn : lexer rest 
                 ("fix", rest)    -> TokenFix : lexer rest 
                 ("letrec", rest) -> TokenLetRec : lexer rest 
+                ("List", rest) -> TokenList : lexer rest 
+                ("nil", rest) -> TokenNil : lexer rest 
+                ("cons", rest) -> TokenCons : lexer rest 
+                ("isnil", rest) -> TokenIsNil : lexer rest 
+                ("head", rest) -> TokenHead : lexer rest 
+                ("tail", rest) -> TokenTail : lexer rest 
                 (var, rest)      -> TokenVar var : lexer rest
 
 lexSymbol cs = case span isToken cs of
