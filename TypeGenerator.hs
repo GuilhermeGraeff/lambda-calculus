@@ -1,4 +1,4 @@
-module Generator where
+module TypeGenerator where
 
 import Test.QuickCheck
 
@@ -11,49 +11,52 @@ maxConstuctSize = 10
 nameList :: String
 nameList = "oiboivacaterneiro"
 
---        Depth -> Árvore de Sintaxe Abstrata Diricionada pelos tipos
+-- No ghci: generate $ generator d
+--                             /    \
+--                           (1,2,3...)
+--         Depth -> Árvore de Sintaxe Abstrata Diricionada pelos tipos
 generator :: Int -> Gen Ty
-generator d = do g      <- genRandomType d
-                 return g
+generator depth = do g      <- genRandomType depth
+                     return g
 
 genRandomType :: Int -> Gen Ty
-genRandomType d = do s     <- genRandomNaturalSize
-                     t     <- if d > 0  
-                              then frequency [(2, genRecordType d s),
-                                              (2, genTupleType d s),
-                                              (2, genListType d s),
-                                              (2, genFunType d s),
-                                              (2, genBasicType)]  
-                              else genBasicType
-                     return t 
+genRandomType depth = do size    <- genRandomNaturalSize
+                         ty      <- if depth > 0  
+                                    then frequency [(2, genRecordType depth size),
+                                                    (2, genTupleType depth size),
+                                                    (2, genListType depth size),
+                                                    (2, genFunType depth size),
+                                                    (4, genBasicType)]  
+                                    else genBasicType
+                         return ty
 
 -- Tipos que podem ser gerados: 
 
 genRecordTypeItem :: Int -> Gen (String, Ty)
-genRecordTypeItem d = do n      <- genRandomName
-                         t      <- genRandomType (d - 1)
-                         return (n, t)
+genRecordTypeItem depth = do name      <- genRandomName
+                             tyType    <- genRandomType (depth - 1)
+                             return (name, tyType)
 
 genRecordType :: Int -> Int -> Gen Ty
-genRecordType d s = do t      <- vectorOf s (genRecordTypeItem d)
-                       return (TRecord t)
+genRecordType depth size = do tyRecordVector    <- vectorOf size (genRecordTypeItem depth)
+                              return (TRecord tyRecordVector)
 
 genTupleType :: Int -> Int -> Gen Ty
-genTupleType d s = do t      <- vectorOf s (genRandomType (d -1))
-                      return (TTuple t)
+genTupleType depth size = do tyVector    <- vectorOf size (genRandomType (depth -1))
+                             return (TTuple tyVector)
 
 genListType :: Int -> Int -> Gen Ty
-genListType d s = do t      <- genRandomType (d -1)
-                     return (List t)
+genListType depth size = do tyType    <- genRandomType (depth -1)
+                            return (List tyType)
 
 genFunType :: Int -> Int -> Gen Ty
-genFunType d s = do t1     <- genRandomType (d - 1)
-                    t2     <- genRandomType (d - 1)
-                    return (TFun t1 t2)
+genFunType depth size = do argumentTy    <- genRandomType (depth - 1)
+                           returnTy      <- genRandomType (depth - 1)
+                           return (TFun argumentTy returnTy)
 
 genBasicType :: Gen Ty
-genBasicType = do t <- elements [TBool, TNum]
-                  return t
+genBasicType = do ty <- elements [TBool, TNum]
+                  return ty
 
 -- Utils:
 --     genRandomNaturalSize at most maxConstuctSize
