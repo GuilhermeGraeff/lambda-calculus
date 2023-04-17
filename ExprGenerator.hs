@@ -5,7 +5,7 @@ import Test.QuickCheck
 import Lexer
 import TypeGenerator 
 
--- -- Type definitions
+ -- Type definitions
 
 -- data Ty = TBool
 --         | TNum
@@ -93,33 +93,40 @@ import TypeGenerator
 
 translate:: Int -> Gen Expr
 translate depth = do types    <- generator depth
-                     expr    <- genExpr types
+                     expr     <- genExpr types depth
                      return expr
 
 -- Nessa função aqui vai todas as substituições
-genExpr:: Ty -> Gen Expr
-genExpr types | types == TBool = genBoolean
-              | types == TNum  = genTNumExpr
-              | otherwise     = genNil
+genExpr:: Ty -> Int -> Gen Expr
+genExpr types depth | types == TBool && depth > 0 = genBoolBranch TBool depth
+                    | types == TBool && depth <= 0 = genLeafBoolean
+                    | otherwise = genBoolBranch TBool depth -- temporário, o otherwise aqui tem que ser uma exception sepa
+             
 
-genTNumExpr :: Gen Expr
-genTNumExpr = do expr   <- frequency (genParen : genCommonExpr)
-                 return expr
-
-
--- genTBoolExpr :: Gen Expr
-
-
-genCommonExpr :: [Gen Expr]
-genCommonExpr = [genParen,
-                 genIf,      
-                 genVar,
-                 genApp,
-                 genLet,
-                 genRecordPro,
-                 genTupleProj,
-                 genHead,
-                 genTail]  
+-- Eu posso fazer vários expressions, um pra cada tipo, onde precisar ser função por exemplo, ou algo do tipo
+genBoolBranch:: Ty -> Int -> Gen Expr
+genBoolBranch types depth = do expression_1 <- genExpr TBool (depth-1)
+                               expression_2 <- genExpr TBool (depth-1)
+                               expression_3 <- genExpr TBool (depth-1)
+                               branch <- frequency [(1, genLeafBoolean),
+                                                    (20, elements [
+                                                        (Paren (expression_1)),
+                                                        (And (expression_1) (expression_2)),
+                                                        (Or (expression_1) (expression_2)),
+                                                        (If (expression_1) (expression_2) (expression_3)),
+                                                        (Var "String"),
+                                                        (App (expression_1) (expression_2) ),
+                                                        (Let "String" (expression_1) (expression_2)),
+                                                        (RecordProj (expression_1) "String"),
+                                                        (TupleProj (expression_1) 10),
+                                                        (IsNil TBool (expression_1) ),
+                                                        (Head TBool (expression_1) ),
+                                                        (Tail TBool (expression_1)),
+                                                        (Not (expression_1)),
+                                                        (Fix (expression_1) ),
+                                                        (Eq (expression_1) (expression_2))])
+                                                    ]
+                               return branch
 
 genParen :: Gen Expr
 genParen = do expr <- elements [Paren BTrue]
@@ -158,9 +165,9 @@ genTail :: Gen Expr
 genTail = do expr <- elements [Tail TBool BTrue]
              return expr
 
-genBoolean :: Gen Expr
-genBoolean = do expr <- elements [BTrue, BFalse]
-                return expr
+genLeafBoolean :: Gen Expr
+genLeafBoolean = do expr <- elements [BTrue, BFalse]
+                    return expr
 
 genNum :: Gen Int
 genNum = do num <- choose(1,maxConstuctSize)

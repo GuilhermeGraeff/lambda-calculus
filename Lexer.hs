@@ -88,14 +88,33 @@ data Token = TokenTrue
 -- Compiling to concrete syntax
 
 instance Show Expr where 
-    show BTrue = "true"
-    show BFalse = "false"
+    show BTrue = " true " 
+    show BFalse =  " false " 
     show (Num n) = show n
-    show (Lam v t b) = "\\" ++ v ++ ":" ++ show t ++ " -> " ++ show b 
-    show (Tuple l) = "(" ++ intercalate ", " (map show l) ++ ")"
-    show (Record l) = "{" ++ intercalate ", " (map (\(k,p) -> k ++ " = " ++ show p) l) ++ "}"
-    show (Nil _) = "[]"
-    show (Cons _ e1 e2) = show e1 ++ ":" ++ show e2 
+    show (Lam v t b) =  " \\ "  ++ v ++  " : "  ++ show t ++  "  ->  "  ++ show b 
+    show (Tuple l) =  " ( "  ++ intercalate  " ,  "  (map show l) ++  " ) " 
+    show (Record l) =  " { "  ++ intercalate  " ,  "  (map (\(k,p) -> k ++  "  =  "  ++ show p) l) ++  " } " 
+    show (Nil _) =  " [] " 
+    show (Cons _ e1 e2) = show e1 ++  " : "  ++ show e2 
+    show (Paren e) =  " ( "  ++ show e ++  " ) " 
+    show (Plus f s) = show f ++  " + "  ++ show s
+    show (Times f s) = show f ++  " * "  ++ show s
+    show (Minus f s) = show f ++  " - "  ++ show s
+    show (And f s) = show f ++  " && "  ++ show s
+    show (Or f s) = show f ++  " || "  ++ show s
+    show (If e t f) =  " if "  ++ show e ++  " then "  ++ show t ++  " else "  ++ show f 
+    show (Var s) = show s 
+    show (App f p) = show f ++  " . "  ++ show p
+    show (Let sv v e) =  " let "  ++ show sv ++  " = "  ++ show v ++  " in "  ++ show e
+    show (TupleProj n content) = show n
+    show (RecordProj n str) = show n
+    show (Fix n) = show n
+    show (Eq n1 n2) = show n1 ++  " == "  ++ show n2
+    show (Not n) = show n
+    show (IsNil tipo n) = show n 
+    show (Head tipo n) = show n 
+    show (Tail tipo n) = show n 
+    
 
 
 -- Lexer functions
