@@ -103,7 +103,10 @@ genExpr types depth | types == TBool && depth > 0 = genBoolBranch TBool depth
                     | types == TNum && depth > 0 = genNumBranch TNum depth
                     | types == TNum && depth <= 0 = genNumLeaf
                     | otherwise = genBoolBranch TBool depth -- temporário, o otherwise aqui tem que ser uma exception sepa
-             
+
+                    -- | TTuple [Ty]
+                    -- | TRecord [(String,Ty)]
+                    -- | List Ty 
 
 -- Eu posso fazer vários expressions, um pra cada tipo, onde precisar ser função por exemplo, ou algo do tipo
 genBoolBranch:: Ty -> Int -> Gen Expr
