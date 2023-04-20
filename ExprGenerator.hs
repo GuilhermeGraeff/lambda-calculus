@@ -111,7 +111,7 @@ genBoolBranch types depth = do expression_1 <- genExpr TBool (depth-1)
                                expression_2 <- genExpr TBool (depth-1)
                                expression_3 <- genExpr TBool (depth-1)
                                branch <- frequency [(1, genBooleanLeaf),
-                                                    (20, elements (map (\x -> (Paren x)) ([
+                                                    (20, elements [
                                                         (Paren (expression_1)),
                                                         (And (expression_1) (expression_2)),
                                                         (Or (expression_1) (expression_2)),
@@ -126,8 +126,8 @@ genBoolBranch types depth = do expression_1 <- genExpr TBool (depth-1)
                                                         (Tail TBool (expression_1)),
                                                         (Not (expression_1)),
                                                         (Fix (expression_1) ),
-                                                        (Eq (expression_1) (expression_2))]))
-                                                    )]
+                                                        (Eq (expression_1) (expression_2))])
+                                                    ]
                                return branch
 
 genNumBranch:: Ty -> Int -> Gen Expr
@@ -135,7 +135,7 @@ genNumBranch types depth = do expression_1 <- genExpr TNum (depth-1)
                               expression_2 <- genExpr TNum (depth-1)
                               expression_3 <- genExpr TNum (depth-1)
                               branch <- frequency [(1, genNumLeaf),
-                                                   (20, elements (map (\x -> (Paren x)) ([
+                                                   (20, elements [
                                                        (Paren (expression_1)),
                                                        (Plus (expression_1) (expression_2)),
                                                        (Times (expression_1) (expression_2)),
@@ -147,8 +147,9 @@ genNumBranch types depth = do expression_1 <- genExpr TNum (depth-1)
                                                        (RecordProj (expression_1) "record_proj_key_num"),
                                                        (TupleProj (expression_1) 10),
                                                        (Head TNum (expression_1)),
-                                                       (Tail TNum (expression_1))]))
-                                                    )]
+                                                       (Tail TNum (expression_1))
+                                                    ])
+                                                  ]
                               return branch
 
 genParen :: Gen Expr
