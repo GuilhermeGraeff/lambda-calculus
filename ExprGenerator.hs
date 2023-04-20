@@ -98,13 +98,14 @@ translate depth = do types    <- generator depth
 
 -- Nessa função aqui vai todas as substituições
 genExpr:: Ty -> Int -> Gen Expr
-genExpr types depth | types == TBool && depth > 0 = genBoolBranch TBool depth
-                    | types == TBool && depth <= 0 = genBooleanLeaf
-                    | types == TNum && depth > 0 = genNumBranch TNum depth
-                    | types == TNum && depth <= 0 = genNumLeaf
-                    | otherwise = genBoolBranch TBool depth -- temporário, o otherwise aqui tem que ser uma exception sepa
-
-                    -- | TTuple [Ty]
+genExpr TBool depth | depth > 0 = genBoolBranch TBool depth
+                    | depth <= 0 = genBooleanLeaf
+genExpr TNum depth | depth > 0 = genNumBranch TNum depth
+                   | depth <= 0 = genNumLeaf 
+genExpr (TFun tipo_1 tipo_2) depth | depth > 0 = genFunBranch TFun depth
+                                   | depth <= 0 = genFunLeaf 
+genExpr _ depth = genBoolBranch TBool depth
+                    -- | TTuple [Ty]    
                     -- | TRecord [(String,Ty)]
                     -- | List Ty 
 
