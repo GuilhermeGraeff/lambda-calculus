@@ -11,13 +11,13 @@ maxConstuctSize = 10
 nameList :: String
 nameList = "oiboivacaterneiro"
 
--- No ghci: generate $ generator d
+-- No ghci: generate $ typeGenerator d
 --                             /    \
 --                           (1,2,3...)
 --         Depth -> Árvore de Sintaxe Abstrata Diricionada pelos tipos
-generator :: Int -> Gen Ty
-generator depth = do g      <- genRandomType depth
-                     return g
+typeGenerator :: Int -> Gen Ty
+typeGenerator depth = do g      <- genRandomType depth
+                         return g
 
 genRandomType :: Int -> Gen Ty
 genRandomType depth = do size    <- genRandomNaturalSize
