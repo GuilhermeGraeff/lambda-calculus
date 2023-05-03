@@ -138,7 +138,6 @@ genBooleanLeaf = do expr <- elements [BTrue, BFalse]
                     return expr
 
 
-
 genNumBranch:: Ty -> Int -> Gen Expr
 genNumBranch types depth = do expression_1 <- genExpr TNum (depth-1)
                               expression_2 <- genExpr TNum (depth-1)
@@ -200,9 +199,25 @@ genParen :: Gen Expr
 genParen = do expr <- elements [Paren BTrue]
               return expr
 
-genIf :: Gen Expr
-genIf = do expr <- elements [If BTrue BTrue BTrue]
-           return expr
+-- genIf :: Gen Expr
+-- genIf = do expr <- return [If BTrue BTrue BTrue]
+--            return expr
+
+genIf :: Int -> Ty -> Gen Expr 
+genIf depth ty = do cond <- genExpr TBool (depth - 1)
+                    bthen <- genExpr ty (depth - 1)
+                    belse <- genExpr ty (depth - 1)
+                    return (If cond bthen belse)
+
+
+genFun :: Int -> Ty -> Ty -> Gen Expr 
+genFun depth int outt = do vname <- genVarName 
+                           body <- genExpr outt depth -- alimentar o ctx de variaveis
+                           return (Lam vname int body)
+
+genVar :: Int -> Ctx -> Ty -> Gen Expr 
+genVar depth ctx ty = elements [Var x | (x, ty') <- ctx, ty' == ty]
+
 
 genVar :: Gen Expr
 genVar = do expr <- elements [Var "boi"]
