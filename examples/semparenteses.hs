@@ -3,4 +3,92 @@
 
 TFun (TFun TNum TBool) TBool
 killall -9 ghc
+ -- Type definitions
+
+-- data Ty = TBool
+--         | TNum
+--         | TFun Ty Ty
+--         | TTuple [Ty]
+--         | TRecord [(String,Ty)]
+--         | List Ty 
+--         deriving (Show, Eq)
+
+-- -- Expression definitions
+
+-- data Expr = BTrue
+--           | BFalse
+--           | Num Int
+--           | Paren Expr
+--           | Plus Expr     
+--           | Times Expr Expr
+--           | Minus Expr Expr
+--           | And Expr Expr
+--           | Or Expr Expr 
+--           | If Expr Expr Expr
+--           | Var String
+--           | Lam String Ty Expr
+--           | App Expr Expr 
+--           | Let String Expr Expr 
+--           | Tuple [Expr]
+--           | TupleProj Expr Int 
+--           | Record [(String,Expr)] 
+--           | RecordProj Expr String 
+--           | Fix Expr 
+--           | Eq Expr Expr
+--           | Not Expr
+--           | Nil Ty
+--           | Cons Ty Expr Expr
+--           | IsNil Ty Expr 
+--           | Head Ty Expr 
+--           | Tail Ty Expr
+--           deriving Eq
+
+-- Os que podem retornar um TBool
+--           | BTrue
+--           | BFalse
+--           | Paren Expr
+--           | And Expr Expr
+--           | Or Expr Expr
+--           | If Expr Expr Expr
+--           | Var String
+--           | App Expr Expr 
+--           | Let String Expr Expr
+--           | RecordProj Expr String
+--           | TupleProj Expr Int 
+--           | IsNil Ty Expr 
+--           | Head Ty Expr 
+--           | Tail Ty Expr
+--           | Not Expr
+--           | Fix Expr 
+--           | Eq Expr Expr
+
+-- Os que podem retornar o TNum
+--           | Num Int
+--           | Paren Expr
+--           | Plus Expr     
+--           | Times Expr Expr
+--           | Minus Expr Expr
+--           | If Expr Expr Expr
+--           | Var String
+--           | App Expr Expr 
+--           | Let String Expr Expr 
+--           | RecordProj Expr String
+--           | TupleProj Expr Int 
+--           | Head Ty Expr 
+--           | Tail Ty Expr
+
+-- As comuns entre o TBool e o TNum
+--           | Paren Expr
+--           | If Expr Expr Expr
+--           | Var String
+--           | App Expr Expr 
+--           | Let String Expr Expr
+--           | RecordProj Expr String
+--           | TupleProj Expr Int 
+--           | Head Ty Expr 
+--           | Tail Ty Expr
+
+if  false  .  true  
+then  let "oaaterne" = 6 in 3 
+else  false  . 4 .  false  &&  \ ioiaterner : TBool  -> if 7 then 9 else  false  . 10 . 2
 
