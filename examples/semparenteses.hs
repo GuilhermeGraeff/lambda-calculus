@@ -92,3 +92,7 @@ if  false  .  true
 then  let "oaaterne" = 6 in 3 
 else  false  . 4 .  false  &&  \ ioiaterner : TBool  -> if 7 then 9 else  false  . 10 . 2
 
+myos>cabal update
+myos>cabal install --lib QuickCheck
+myos>ghci
+gchi> import Test.QuickCheck
