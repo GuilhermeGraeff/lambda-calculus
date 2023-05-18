@@ -41,6 +41,7 @@ data Expr = BTrue
           | IsNil Ty Expr 
           | Head Ty Expr 
           | Tail Ty Expr
+          | UnknownExpression
           deriving Eq
 
 -- Token definitions
@@ -114,7 +115,7 @@ instance Show Expr where
     show (IsNil tipo n) = show n 
     show (Head tipo n) = show n 
     show (Tail tipo n) = show n 
-    
+    show (UnknownExpression) = " ██████████ "    
 
 
 -- Lexer functions
