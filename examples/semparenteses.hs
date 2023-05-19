@@ -96,3 +96,20 @@ myos>cabal update
 myos>cabal install --lib QuickCheck
 myos>ghci
 gchi> import Test.QuickCheck
+
+ let "ioariro" =  true in 
+    8 
+    -  
+    ( 
+        ( 
+            \ oibivni : TNum  ->  (  \ oivaaereir : TFun TBool TBool  ->  9 - 3 )
+        ) 
+        . 
+        (
+            9
+        ) 
+    ) 
+    . 
+    ( 
+        \ ooiaatrnei : TNum  ->   \ iovacatereir : TBool  ->  "iovacatereir"
+    ) 
