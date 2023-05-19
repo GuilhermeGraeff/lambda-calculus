@@ -15,20 +15,20 @@ data Ty = TBool
 
 -- Expression definitions
 
-data Expr = BTrue
-          | BFalse
-          | Num Int
-          | Paren Expr
-          | Plus Expr Expr
-          | Times Expr Expr
-          | Minus Expr Expr
-          | And Expr Expr
-          | Or Expr Expr
-          | If Expr Expr Expr
-          | Var String
-          | Lam String Ty Expr
-          | App Expr Expr 
-          | Let String Expr Expr 
+data Expr = BTrue --
+          | BFalse --
+          | Num Int -- 
+          | Paren Expr --
+          | Plus Expr Expr --
+          | Times Expr Expr --
+          | Minus Expr Expr --
+          | And Expr Expr --
+          | Or Expr Expr --
+          | If Expr Expr Expr --
+          | Var String --
+          | Lam String Ty Expr --
+          | App Expr Expr  --
+          | Let String Expr Expr  --
           | Tuple [Expr]
           | TupleProj Expr Int 
           | Record [(String,Expr)] 
@@ -105,7 +105,7 @@ instance Show Expr where
     show (Or f s) = show f ++  " || "  ++ show s
     show (If e t f) =  " if "  ++ show e ++  " then "  ++ show t ++  " else "  ++ show f 
     show (Var s) = show s 
-    show (App f p) = show f ++  " . "  ++ show p
+    show (App f p) =    " (" ++ show f ++  ") . ("  ++ show p ++  ") "
     show (Let sv v e) =  " let "  ++ show sv ++  " = "  ++ show v ++  " in "  ++ show e
     show (TupleProj n content) = show n
     show (RecordProj n str) = show n

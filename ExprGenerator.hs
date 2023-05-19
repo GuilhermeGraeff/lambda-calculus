@@ -40,7 +40,9 @@ genLeaf TBool = do leaf <- frequency [(1, genBoolean)] -- genvar vai aqi também
                    return leaf
 genLeaf TNum = do leaf <- frequency [(1, genNum)] -- genvar vai aqi também sepa
                   return leaf
-genLeaf (TFun a b) = genExpr 0 b
+genLeaf (TFun inputType outputType) = do vname <- (genRandomName) 
+                                         body <- genExpr 1 outputType -- alimentar o ctx de variaveis com o vname e o tipo deste vname que é o inputType
+                                         return (Lam vname inputType body)
 genLeaf _ = genUnknown
                 
 
@@ -78,6 +80,11 @@ genLet depth expressionType = do vname <- (genRandomName)
                                  body <- genExpr (depth - 1) expressionType -- Alimenta o contexto aqui praga
                                  return (Let vname variableExpression body)
 
+genLam :: Int -> Ty -> Gen Expr 
+genLam depth expressionType = do vname <- (genRandomName) 
+                                 inputType <- typeGenerator (depth - 1)
+                                 body <- genExpr depth expressionType -- alimentar o ctx de variaveis com o vname e o tipo deste vname que é o inputType
+                                 return (Lam vname inputType body)  -- Talvez isso aqui tenha que ser garantido que o que vai ser aplicado ao lam tem esse inputType
 
 genApp :: Int -> Ty -> Gen Expr
 genApp depth expressionType = do parameterType   <- typeGenerator (depth - 1)
@@ -108,11 +115,6 @@ genIf depth expressionType = do condition  <- genExpr (depth - 1) TBool
                                 return (If condition branchThen branchElse)
 
 
-genLam :: Int -> Ty -> Gen Expr 
-genLam depth expressionType = do vname <- (genRandomName) 
-                                 inputType <- typeGenerator (depth - 1)
-                                 body <- genExpr depth expressionType -- alimentar o ctx de variaveis com o vname e o tipo deste vname que é o inputType
-                                 return (Lam vname inputType body)  -- Talvez isso aqui tenha que ser garantido que o que vai ser aplicado ao lam tem esse inputType
 
 
 -- genVar :: Int -> Ctx -> Ty -> Gen Expr 
