@@ -92,7 +92,7 @@ instance Show Expr where
     show BTrue = " true " 
     show BFalse =  " false " 
     show (Num n) = show n
-    show (Lam v t b) =  " \\ "  ++ v ++  " : "  ++ show t ++  "  ->  "  ++ show b 
+    show (Lam v t b) =  "(\\ "  ++ v ++  " : "  ++ show t ++  "  ->  "  ++ show b ++ ") "
     show (Tuple l) =  " ( "  ++ intercalate  " ,  "  (map show l) ++  " ) " 
     show (Record l) =  " { "  ++ intercalate  " ,  "  (map (\(k,p) -> k ++  "  =  "  ++ show p) l) ++  " } " 
     show (Nil _) =  " [] " 
