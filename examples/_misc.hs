@@ -113,3 +113,16 @@ gchi> import Test.QuickCheck
     ( 
         \ ooiaatrnei : TNum  ->   \ iovacatereir : TBool  ->  "iovacatereir"
     ) 
+
+letrec iseven : (Number -> Bool) =
+\ x: Number -> 
+if x == 0 then true
+else if (x - 1) == 0 then false
+else iseven (x - 2)
+in
+iseven 2
+
+(\ x: Number -> 
+if x == 0 then true
+else if (x - 1) == 0 then false
+else true) 2

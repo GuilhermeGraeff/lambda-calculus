@@ -41,12 +41,18 @@ genBranch depth ctx ty = do commonBranch <- frequency [(10, genVar depth ctx ty)
 
 
 genLeaf :: Ctx -> Ty -> Gen Expr
-genLeaf ctx TBool = do leaf <- frequency [(1, genBoolean)] -- genvar vai aqi também sepa
+genLeaf ctx TBool = do leaf <- frequency [
+                                            (1, genBoolean),
+                                            (1, genVar 1 ctx TBool)
+                                          ]
                        return leaf
-genLeaf ctx TNum = do leaf <- frequency [(1, genNum)] -- genvar vai aqi também sepa
+genLeaf ctx TNum = do leaf <- frequency [
+                                          (1, genNum),
+                                          (1, genVar 1 ctx TNum)
+                                        ]
                       return leaf
 genLeaf ctx (TFun inputType outputType) = do vname <- (genRandomName) 
-                                             body <- genExpr 1 ((vname, inputType):ctx) outputType -- alimentar o ctx de variaveis com o vname e o tipo deste vname que é o inputType
+                                             body <- genExpr 1 ((vname, inputType):ctx) outputType
                                              return (Lam vname inputType body)
 genLeaf _ _ = genUnknown
                 
@@ -129,5 +135,3 @@ genVar depth ((name,expressionType):xs) ty = do variable <- elements [Var name]
                                                         else 
                                                           getNext
                                                        )
-
-

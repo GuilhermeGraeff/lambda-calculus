@@ -10,11 +10,8 @@ maxConstuctSize = 10
 
 nameList :: String
 nameList = "oiboivacaterneiro"
+--
 
--- No ghci: generate $ typeGenerator d
---                             /    \
---                           (1,2,3...)
---         Depth -> Árvore de Sintaxe Abstrata Diricionada pelos tipos
 typeGenerator :: Int -> Gen Ty
 typeGenerator depth = do g      <- genRandomType depth
                          return g
@@ -57,10 +54,7 @@ genFunType depth size = do argumentTy    <- genRandomType (depth - 1)
 genBasicType :: Gen Ty
 genBasicType = do ty <- elements [TBool, TNum]
                   return ty
-
--- Utils:
---     genRandomNaturalSize at most maxConstuctSize
---     genRandomName from nameList
+--
 
 genRandomNaturalSize :: Gen Int
 genRandomNaturalSize = choose(1,maxConstuctSize)

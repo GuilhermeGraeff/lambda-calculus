@@ -1,5 +1,0 @@
-(\ x: Number -> 
-if x == 0 then true
-else if (x - 1) == 0 then false
-else true) 2
-
