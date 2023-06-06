@@ -11,6 +11,9 @@ isEmptyCtx :: [(String, Ty)] -> Bool
 isEmptyCtx [] = True
 isEmptyCtx _ = False
 
+genName :: Ctx -> String
+genName ctx = "x" ++ show (length ctx)
+
 generator:: Int -> Gen Expr
 generator depth = do types    <- typeGenerator depth
                      expr     <- genExpr depth [] types
@@ -25,9 +28,9 @@ genExpr depth ctx ty             = genLeaf ctx ty
 -- É desse jeito ainda pra não catar os problema dos tipos que ainda não existem
 
 genBranch :: Int -> Ctx -> Ty -> Gen Expr
-genBranch depth ctx ty = do commonBranch <- frequency [(10, genVar depth ctx ty), (1, genLet depth ctx ty), (1, genApp depth ctx ty), (1, genParen depth ctx ty), (1, genIf depth ctx ty), (1, genLam depth ctx ty)] -- genvar vai aq tmbm
-                            boolBranch   <- frequency [(10, genVar depth ctx ty), (1, genLet depth ctx ty), (1, genApp depth ctx ty), (1, genParen depth ctx ty), (1, genIf depth ctx ty), (1, genLam depth ctx ty), (1, genAnd depth ctx), (1, genOr depth ctx)]  -- genvar vai aq tmbm
-                            numBranch    <- frequency [(10, genVar depth ctx ty), (1, genLet depth ctx ty), (1, genApp depth ctx ty), (1, genParen depth ctx ty), (1, genIf depth ctx ty), (1, genLam depth ctx ty), (1, genPlus depth ctx), (1, genMinus depth ctx), (1, genTimes depth ctx)]  -- genvar vai aq tmbm
+genBranch depth ctx ty = do commonBranch <- frequency [(10, genVar depth ctx ty), (1, genLet depth ctx ty), (1, genApp depth ctx ty), (1, genParen depth ctx ty), (1, genIf depth ctx ty)] -- genvar vai aq tmbm
+                            boolBranch   <- frequency [(10, genVar depth ctx ty), (1, genLet depth ctx ty), (1, genApp depth ctx ty), (1, genParen depth ctx ty), (1, genIf depth ctx ty), (1, genAnd depth ctx), (1, genOr depth ctx)]  -- genvar vai aq tmbm
+                            numBranch    <- frequency [(10, genVar depth ctx ty), (1, genLet depth ctx ty), (1, genApp depth ctx ty), (1, genParen depth ctx ty), (1, genIf depth ctx ty), (1, genPlus depth ctx), (1, genMinus depth ctx), (1, genTimes depth ctx)]  -- genvar vai aq tmbm
                             return (
                                     if ty == TBool then
                                       boolBranch
@@ -51,9 +54,11 @@ genLeaf ctx TNum = do leaf <- frequency [
                                           (1, genVar 1 ctx TNum)
                                         ]
                       return leaf
-genLeaf ctx (TFun inputType outputType) = do vname <- (genRandomName) 
-                                             body <- genExpr 1 ((vname, inputType):ctx) outputType
-                                             return (Lam vname inputType body)
+genLeaf ctx (TFun inputType outputType) = do body <- genExpr 1 ((vname, inputType):ctx) outputType
+                                             parameter <- genExpr 1 ctx inputType
+                                             return (App (Lam vname inputType body) (parameter))
+                                          where 
+                                            vname = genName ctx
 genLeaf _ _ = genUnknown
                 
 
@@ -85,18 +90,20 @@ genTimes depth ctx = do leftExpression <- genExpr (depth - 1) ctx TNum
                         return (Times leftExpression rightExpression)
 
 genLet :: Int -> Ctx -> Ty -> Gen Expr
-genLet depth ctx expressionType = do vname <- (genRandomName)
-                                     variableType <- typeGenerator (depth - 1)
+genLet depth ctx expressionType = do variableType <- typeGenerator (depth - 1)
                                      variableExpression <- genExpr (depth - 1) ctx variableType  
                                      body <- genExpr (depth - 1) ((vname, variableType):ctx) expressionType -- Alimenta o contexto aqui praga
                                      return (Let vname variableExpression body)
+                                  where
+                                    vname = genName ctx
+
 
 genLam :: Int -> Ctx -> Ty -> Gen Expr 
-genLam depth ctx expressionType = do vname <- (genRandomName) 
-                                     inputType <- typeGenerator (depth - 1)
+genLam depth ctx expressionType = do inputType <- typeGenerator (depth - 1)
                                      body <- genExpr (depth - 1) ((vname, inputType):ctx) expressionType -- alimentar o ctx de variaveis com o vname e o tipo deste vname que é o inputType
                                      return (Lam vname inputType body)  -- Talvez isso aqui tenha que ser garantido que o que vai ser aplicado ao lam tem esse inputType
-
+                                  where 
+                                    vname = genName ctx
 genApp :: Int -> Ctx -> Ty -> Gen Expr
 genApp depth ctx expressionType = do parameterType   <- typeGenerator (depth - 1)
                                      body            <- genExpr (depth - 1) ctx (TFun parameterType expressionType)
