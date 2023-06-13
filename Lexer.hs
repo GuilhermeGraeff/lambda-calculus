@@ -89,10 +89,11 @@ data Token = TokenTrue
 -- Compiling to concrete syntax
 
 instance Show Expr where 
-    show BTrue = " true " 
-    show BFalse =  " false " 
+    show BTrue = " True "
+    show BFalse =  " False " 
     show (Num n) = show n
-    show (Lam v t b) =  "(\\ "  ++ v ++  " : "  ++ show t ++  "  ->  "  ++ show b ++ ") "
+    -- show (Lam v t b) =  "(\\"  ++ v ++  " : "  ++ show t ++  "  ->  "  ++ show b ++ ") "
+    show (Lam v t b) =  "(\\"  ++ v ++  " ->  "  ++ show b ++ ") "
     show (Tuple l) =  " ( "  ++ intercalate  " ,  "  (map show l) ++  " ) " 
     show (Record l) =  " { "  ++ intercalate  " ,  "  (map (\(k,p) -> k ++  "  =  "  ++ show p) l) ++  " } " 
     show (Nil _) =  " [] " 
@@ -104,9 +105,9 @@ instance Show Expr where
     show (And f s) = show f ++  " && "  ++ show s
     show (Or f s) = show f ++  " || "  ++ show s
     show (If e t f) =  " if "  ++ show e ++  " then "  ++ show t ++  " else "  ++ show f 
-    show (Var s) = show s 
-    show (App f p) =    " (" ++ show f ++  ") . ("  ++ show p ++  ") "
-    show (Let sv v e) =  " let "  ++ show sv ++  " = "  ++ show v ++  " in "  ++ show e
+    show (Var s) = s 
+    show (App f p) =    " (" ++ show f ++  ")("  ++ show p ++  ") "
+    show (Let sv v e) =  " let "  ++ sv ++  " = "  ++ show v ++  " in "  ++ show e
     show (TupleProj n content) = show n
     show (RecordProj n str) = show n
     show (Fix n) = show n
