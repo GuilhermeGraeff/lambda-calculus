@@ -56,8 +56,17 @@ testMultipleTimes numTests filePath depth = do
 
 main :: IO ()
 main = do
-  let numTests = 1000
+  let numTests = 10
       depth = 50
       filePath = "testes/expressions"
   testMultipleTimes numTests filePath depth
   putStrLn "Testing completed"
+
+
+
+
+-- ghc -i./interpretador -i./gerador gerador/Main.hs
+-- ./gerador/Main
+
+-- Se estiver na pasta:  ghc -i./../interpretador Main.hs
+-- ./Main
