@@ -1,4 +1,5 @@
 gerador/testes/*
+!pasta_teste/.gitkeep
 
 *.hi
 *.o
