@@ -1,4 +1,4 @@
-module MainInterpreter where
+module Main where
 
 import Lexer 
 import Parser
