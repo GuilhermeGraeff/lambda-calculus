@@ -11,7 +11,7 @@ maxConstuctSize :: Int
 maxConstuctSize = 10
 
 nameList :: String
-nameList = "bauanercampomiaoe"
+nameList = "pqiweruoalsdfjkczxcvnmurtyfghjcvbn"
 --
 
 typeGenerator :: Int -> Gen Ty
@@ -21,7 +21,8 @@ typeGenerator depth = do g          <- genRandomType depth
 genRandomType :: Int -> Gen Ty
 genRandomType depth = do size    <- genRandomNaturalSize
                          ty      <- if depth > 0  
-                                    then frequency [(2, genFunType depth size),
+                                    then frequency [(2, genListType depth size),
+                                                    (2, genFunType depth size),
                                                     (2, genBasicType)]  
                                     else genBasicType
                          return ty

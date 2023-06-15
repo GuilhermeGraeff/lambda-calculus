@@ -56,8 +56,8 @@ testMultipleTimes numTests filePath depth = do
 
 main :: IO ()
 main = do
-  let numTests = 10
-      depth = 50
+  let numTests = 100
+      depth = 5
       filePath = "testes/expressions"
   testMultipleTimes numTests filePath depth
   putStrLn "Testing completed"

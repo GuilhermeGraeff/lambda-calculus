@@ -114,7 +114,7 @@ instance Show Expr where
     show (Eq n1 n2) = show n1 ++  " == "  ++ show n2
     show (Not n) = show n
     show (IsNil tipo n) = show n 
-    show (Head tipo n) = show n 
+    show (Head tipo n) = " ( head ("  ++ show n ++  ") ) " 
     show (Tail tipo n) = show n 
     show (UnknownExpression) = " ██████████ "    
 
