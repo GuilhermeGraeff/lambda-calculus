@@ -42,7 +42,7 @@ genRandomType depth = do size    <- genRandomNaturalSize
 -- Tipos que podem ser gerados: 
 genRecordTypeItem :: Int -> Gen (String, Ty)
 genRecordTypeItem depth = do name      <- genRandomName
-                             tyType    <- genRandomType (depth - 1)
+                             tyType    <- genRandomType (div depth 2)
                              return (name, tyType)
 
 genRecordType :: Int -> Int -> Gen Ty
@@ -50,16 +50,16 @@ genRecordType depth size = do tyRecordVector    <- vectorOf size (genRecordTypeI
                               return (TRecord tyRecordVector)
 
 genTupleType :: Int -> Int -> Gen Ty
-genTupleType depth size = do tyVector    <- vectorOf size (genRandomType (depth -1))
+genTupleType depth size = do tyVector    <- vectorOf size (genRandomType (div depth 2))
                              return (TTuple tyVector)
 
 genListType :: Int -> Int -> Gen Ty
-genListType depth size = do tyType    <- genRandomType (depth -1)
+genListType depth size = do tyType    <- genRandomType (div depth 2)
                             return (List tyType)
 
 genFunType :: Int -> Int -> Gen Ty
-genFunType depth size = do argumentTy    <- genRandomType (depth - 1)
-                           returnTy      <- genRandomType (depth - 1)
+genFunType depth size = do argumentTy    <- genRandomType (div depth 2)
+                           returnTy      <- genRandomType (div depth 2)
                            return (TFun argumentTy returnTy)
 
 genBasicType :: Gen Ty
