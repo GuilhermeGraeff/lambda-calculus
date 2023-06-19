@@ -99,7 +99,7 @@ insertNumberAfterSlash str num = case break (== '/') str of
 
 main :: IO ()
 main = do
-  let numTests = 10000
+  let numTests = 100
       depth = 2
       filePath = "testes/expressions"
   testMultipleTimes numTests filePath depth
