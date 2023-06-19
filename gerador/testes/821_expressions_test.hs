@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( if  if  False  then  True  else  False  &&  True  ||  True  then  if  ( head ( (  (  True  )  :  (  True  )  :  (  False  )  :  (  False  )  :  (  True  )  :  (  False  )  :  (  True  )  :  (  True  )  :  (  True  )  :  (  False  )  :  (  True  )  :  (  True  )  :  []  ) ) )  then 2 * 7 else  ((\x0 ->  8) )( False )  else  if  (  True  )  then  ( 9 )  else 10 * 8)

@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( ((\x0 ->  2) )( ( head ( (  (  ((\x0 ->   False ) )(3)  )  :  (  ((\x0 ->   True ) )(5)  )  :  (  ((\x0 ->   False ) )(8)  )  :  (  ((\x0 ->   True ) )(6)  )  :  (  ((\x0 ->   True ) )(2)  )  :  (  ((\x0 ->   True ) )(1)  )  :  (  ((\x0 ->   True ) )(9)  )  :  (  ((\x0 ->   True ) )(8)  )  :  (  ((\x0 ->   False ) )(8)  )  :  (  ((\x0 ->   False ) )(8)  )  :  []  ) ) ) )  -  if  False  ||  False  then  let x0 =  False  in 2 else  ((\x0 ->  6) )( True ) )

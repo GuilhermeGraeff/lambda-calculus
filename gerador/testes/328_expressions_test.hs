@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( let x0 = 5 in  ((\x0 ->   ((\x1 ->   ((\x2 ->   ((\x3 ->  x3) )(7) ) )( (  (  False  )  :  (  True  )  :  ( x1 )  :  (  False  )  :  ( x1 )  :  ( x1 )  :  ( x1 )  :  (  True  )  :  ( x1 )  :  ( x1 )  :  ( x1 )  :  ( x1 )  :  (  False  )  :  (  True  )  :  ( x1 )  :  (  True  )  :  ( x1 )  :  (  True  )  :  ( x1 )  :  (  True  )  :  ( x1 )  :  []  ) ) ) )( False ) ) )( ((\x0 ->   ((\x1 ->   False ) )( True ) ) )(2) ) )

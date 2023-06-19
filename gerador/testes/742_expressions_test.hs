@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( if  if  let x0 = 8 in  True  then  (  True  )  else  True  then  let x0 =  ((\x0 ->   True ) )( True )  in  ((\x0 ->   ((\x1 ->  x0) )(5) ) )( True )  else  let x0 =  (  (  ( 4 )  :  ( 4 )  :  ( 1 )  :  ( 1 )  :  []  )  )  in  let x0 =  False  in  ((\x1 ->   True ) )(5) )

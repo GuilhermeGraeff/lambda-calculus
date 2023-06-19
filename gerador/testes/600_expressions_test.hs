@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( if  ((\x0 ->   True ) )( if  False  then  False  else  True )  then  let x0 = 4 in  True  &&  if  False  then  False  else  False  else  if  False  then  True  else  False  &&  (  True  ) )

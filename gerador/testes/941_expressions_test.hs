@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( let x0 =  ((\x0 ->   True ) )( ((\x0 ->   ((\x1 ->  x0) )( True ) ) )(3) )  in  if  let x0 = 10 in  False  then  ( head ( (  (  ((\x0 ->  9) )(8)  )  :  (  ((\x0 ->  x0) )(1)  )  :  []  ) ) )  else  let x0 = 6 in  ((\x1 ->  7) )(x0) )

@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( if  if  if  False  then  False  else  True  then  True  ||  False  else  ( head ( (  (  True  )  :  (  True  )  :  []  ) ) )  then  (  if  False  then  False  else  False  )  else  ((\x0 ->   False ) )( let x0 =  False  in x0) )

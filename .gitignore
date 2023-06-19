@@ -1,4 +1,4 @@
-gerador/testes/*
+# gerador/testes/*
 !pasta_teste/.gitkeep
 
 *.hi

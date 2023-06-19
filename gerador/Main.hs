@@ -7,6 +7,7 @@ import ExprGenerator
 import TypeGenerator
 import Lexer
 import Control.Monad (mapM_)
+import System.Directory (removeFile)
 
 exprGenerator :: Int -> FilePath -> Gen Expr
 exprGenerator depth _ = do
@@ -34,6 +35,8 @@ runHaskellCode optimization filePath testNum = do
       case (exitCode) of
         (ExitSuccess) -> do
           putStrLn "Program executed successfully"
+          removeFile ((take (length filePath - 3) filePath) ++ ".o")
+          removeFile ((take (length filePath - 3) filePath) ++ ".hi")
           return ("Test " ++ show testNum ++ ": Passed", stdout)
         (ExitFailure code) -> do
           putStrLn $ "Error during program execution (exit code: " ++ show code ++ ")"
@@ -42,14 +45,14 @@ runHaskellCode optimization filePath testNum = do
       putStrLn "Error during Haskell code compilation"
       return ("Test " ++ show testNum ++ ": Compilation Error", "")
 
-writeStatistics :: FilePath -> [(String, String)] -> IO ()
-writeStatistics filePath statistics = do
-  let formattedStatistics = unlines [stat ++ "\nResult: " ++ result | (stat, result) <- statistics]
-  writeFile filePath formattedStatistics
+writeStatistics :: FilePath -> (String, String) -> IO ()
+writeStatistics filePath (stat,result) = do
+  let formattedStatistics = stat ++ "\nResult: \n" ++ result
+  appendFile filePath formattedStatistics
 
 compareResults :: String -> String -> String
 compareResults result1 result2
-  | result1 == result2 = "Results match"
+  | lines result1 == lines result2 = "Results match"
   | otherwise = "Results do not match\n" ++ result1 ++ "\n" ++ result2
 
 testMultipleTimes :: Int -> FilePath -> Int -> IO ()
@@ -65,19 +68,19 @@ testMultipleTimes numTests filePath depth = do
                         (stat_3, result_3) <- runHaskellCode "-O3" filePathName testNum
                         putStrLn "--Normal--"
                         putStrLn stat
-                        putStrLn result
+                        putStr result
                         putStrLn "--Optimized 0--"
                         putStrLn stat_0
-                        putStrLn result_0
+                        putStr result_0
                         putStrLn "--Optimized 1--"
                         putStrLn stat_1
-                        putStrLn result_1
+                        putStr result_1
                         putStrLn "--Optimized 2--"
                         putStrLn stat_2
-                        putStrLn result_2
+                        putStr result_2
                         putStrLn "--Optimized 3--"
                         putStrLn stat_3
-                        putStrLn result_3
+                        putStr result_3
                         putStrLn "===="
                         putStrLn $ compareResults stat_0 result_0
                         putStrLn $ compareResults stat result
@@ -86,11 +89,12 @@ testMultipleTimes numTests filePath depth = do
                         putStrLn $ compareResults stat_3 result_3
                         let statuses = unlines [stat, stat_0, stat_1, stat_2, stat_3]
                             resultuses = unlines [result, result_0, result_1, result_2, result_3]
-                        return (statuses , "\n" ++ resultuses)
+                        let statisticsFilePath = filePath ++ "_statistics.txt"
+                        writeStatistics statisticsFilePath (statuses, resultuses)
+                        return (statuses, "\n" ++ resultuses)
                       ) [1..numTests]
   let statisticsFilePath = filePath ++ "_statistics.txt"
-  writeStatistics statisticsFilePath statistics
-  putStrLn $ "Statistics written to file: " ++ statisticsFilePath
+  putStrLn $ "Test ended, statistics at: " ++ statisticsFilePath
 
 insertNumberAfterSlash :: String -> Int -> String
 insertNumberAfterSlash str num = case break (== '/') str of
@@ -99,8 +103,8 @@ insertNumberAfterSlash str num = case break (== '/') str of
 
 main :: IO ()
 main = do
-  let numTests = 100
-      depth = 2
+  let numTests = 1000
+      depth = 5
       filePath = "testes/expressions"
   testMultipleTimes numTests filePath depth
   putStrLn "Testing completed"

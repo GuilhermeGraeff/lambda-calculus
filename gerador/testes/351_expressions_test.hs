@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( if  if  False  then  True  else  False  ||  if  True  then  False  else  False  then  let x0 =  ((\x0 ->   ((\x1 ->   False ) )(x0) ) )( False )  in  ( head ( (  ( 3 )  :  ( 1 )  :  []  ) ) )  else 6 * 10 + 3 + 5)

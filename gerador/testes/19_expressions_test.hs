@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( if  ( head ( (  (  True  )  :  []  ) ) )  then  ((\x0 ->  2) )( if  True  then  ((\x0 ->  x0) )( True )  else  ((\x0 ->  x0) )( True ) )  else  let x0 =  True  in 2 *  ( 9 ) )

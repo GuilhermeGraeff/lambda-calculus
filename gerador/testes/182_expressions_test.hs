@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( ( head ( (  (  if  ( head ( (  (  True  )  :  (  True  )  :  (  False  )  :  (  True  )  :  (  False  )  :  []  ) ) )  then  ((\x0 ->   ((\x1 ->  3) )(9) ) )( False )  else  (  ((\x0 ->  x0) )(3)  )  )  :  (  if  True  then  ((\x0 ->  x0) )(6)  else  ((\x0 ->  x0) )(1)  )  :  (  ((\x0 ->  x0) )(3)  )  :  []  ) ) ) )

@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( let x0 = 8 in x0 +  ( head ( (  ( 2 )  :  ( 9 )  :  ( 3 )  :  ( 4 )  :  ( 3 )  :  ( 1 )  :  ( 8 )  :  ( 1 )  :  ( 3 )  :  ( 8 )  :  ( 5 )  :  ( 7 )  :  ( 10 )  :  ( 10 )  :  []  ) ) )  +  if  let x0 =  False  in x0 then 6 * 6 else  ((\x0 ->  4) )( False ) )

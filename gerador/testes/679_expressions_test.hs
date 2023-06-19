@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( ((\x0 ->   (  (  (  True  )  :  (  False  )  :  (  False  )  :  (  True  )  :  (  True  )  :  (  False  )  :  (  True  )  :  (  True  )  :  (  True  )  :  (  False  )  :  (  False  )  :  (  False  )  :  (  False  )  :  (  False  )  :  (  True  )  :  (  True  )  :  (  True  )  :  []  )  ) ) )( ( 6 - 2 ) ) )

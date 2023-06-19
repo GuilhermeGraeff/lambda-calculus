@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( (  ( head ( (  (  False  )  :  (  False  )  :  (  False  )  :  (  True  )  :  (  False  )  :  (  False  )  :  []  ) ) )  )  ||  ( head ( (  (  False  ||  True  )  :  (  True  )  :  (  False  )  :  (  False  )  :  (  False  )  :  (  False  )  :  []  ) ) ) )

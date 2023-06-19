@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( (  if  let x0 = 6 in  False  then  ( head ( (  (  True  )  :  (  False  )  :  (  False  )  :  (  False  )  :  []  ) ) )  else  ( head ( (  (  False  )  :  (  True  )  :  (  False  )  :  (  True  )  :  (  True  )  :  (  True  )  :  (  True  )  :  (  False  )  :  (  True  )  :  (  False  )  :  (  True  )  :  (  True  )  :  []  ) ) )  ) )

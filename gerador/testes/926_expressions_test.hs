@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( let x0 =  let x0 =  (  (  (  False  )  :  (  False  )  :  (  False  )  :  (  True  )  :  (  True  )  :  []  )  )  in  if  True  then  ((\x0 ->   False ) )(10)  else  ((\x0 ->   False ) )(10)  in  let x1 =  let x1 =  False  in  ((\x2 ->   True ) )(x1)  in  ((\x0 ->   ((\x1 ->   (  ( 2 )  :  ( 10 )  :  ( 2 )  :  []  ) ) )( ((\x1 ->  5) )(x0) ) ) )( False ) )

@@ -1,0 +1,2 @@
+main :: IO ()
+main = print ( (  if  ((\x0 ->  x0) )( True )  then  let x0 = 9 in  ((\x1 ->  x0) )( ((\x1 ->   ((\x2 ->   False ) )( False ) ) )( True ) )  else  if  True  then  ((\x0 ->  10) )( ((\x0 ->   ((\x1 ->  x1) )( False ) ) )( False ) )  else  ((\x0 ->  9) )( ((\x0 ->   ((\x1 ->   True ) )(x0) ) )( False ) )  ) )
