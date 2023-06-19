@@ -20,28 +20,25 @@ writeExpressionToFile filePath depth = do
   expression <- generate expressionGen
   writeFile filePath ("main :: IO ()\nmain = print (" ++ (show expression) ++ ")")
 
-runHaskellCode :: FilePath -> FilePath -> Int -> IO (String, String)
-runHaskellCode filePath optimizedFilePath testNum = do
-  let compilationCommand = "ghc -o programa " ++ filePath
-      optimizedCompilationCommand = "ghc -O -o programa_optimized " ++ optimizedFilePath
+
+--                -O
+runHaskellCode :: String -> FilePath -> Int -> IO (String, String)
+runHaskellCode optimization filePath testNum = do
+  let compilationCommand = "ghc " ++ optimization ++ " " ++ filePath ++ " -o programa"
+  putStrLn $ "Compiling Haskell code with command: " ++ compilationCommand
   compilationResult <- system compilationCommand
-  optimizedCompilationResult <- system optimizedCompilationCommand
-  case (compilationResult, optimizedCompilationResult) of
-    (ExitSuccess, ExitSuccess) -> do
+  case (compilationResult) of
+    (ExitSuccess) -> do
       putStrLn "Compilation completed successfully"
       (exitCode, stdout, stderr) <- readCreateProcessWithExitCode (shell "./programa") ""
-      (optimizedExitCode, optimizedStdout, optimizedStderr) <- readCreateProcessWithExitCode (shell "./programa_optimized") ""
-      case (exitCode, optimizedExitCode) of
-        (ExitSuccess, ExitSuccess) -> do
+      case (exitCode) of
+        (ExitSuccess) -> do
           putStrLn "Program executed successfully"
-          return ("Test " ++ show testNum ++ ": Passed", compareResults stdout optimizedStdout)
-        (ExitSuccess, ExitFailure code) -> do
-          putStrLn $ "Error during optimized program execution (exit code: " ++ show code ++ ")"
-          return ("Test " ++ show testNum ++ ": Failed", "")
-        (ExitFailure code, _) -> do
+          return ("Test " ++ show testNum ++ ": Passed", stdout)
+        (ExitFailure code) -> do
           putStrLn $ "Error during program execution (exit code: " ++ show code ++ ")"
           return ("Test " ++ show testNum ++ ": Failed", "")
-    (ExitFailure _, _) -> do
+    (ExitFailure _) -> do
       putStrLn "Error during Haskell code compilation"
       return ("Test " ++ show testNum ++ ": Compilation Error", "")
 
@@ -57,15 +54,43 @@ compareResults result1 result2
 
 testMultipleTimes :: Int -> FilePath -> Int -> IO ()
 testMultipleTimes numTests filePath depth = do
-  let optimizedFilePath = filePath ++ "_optimized"
-  mapM_ (\testNum -> do
-           writeExpressionToFile ((insertNumberAfterSlash filePath testNum) ++ "_test.hs") depth
-           writeExpressionToFile ((insertNumberAfterSlash optimizedFilePath testNum) ++ "_test.hs") depth -- Generate optimized file
-           putStrLn $ "Expression generated and written to file " ++ (insertNumberAfterSlash filePath testNum) ++ "_test.hs"
-           (stat, result) <- runHaskellCode ((insertNumberAfterSlash filePath testNum) ++ "_test.hs") ((insertNumberAfterSlash optimizedFilePath testNum) ++ "_test.hs") testNum
-           putStrLn stat
-           putStrLn result
-       ) [1..numTests]
+  statistics <- mapM (\testNum -> do
+                        let filePathName = insertNumberAfterSlash filePath testNum ++ "_test.hs"
+                        writeExpressionToFile filePathName depth
+                        putStrLn $ "Expression generated and written to file " ++ filePathName
+                        (stat_0, result_0) <- runHaskellCode "-O0" filePathName testNum
+                        (stat, result) <- runHaskellCode "" filePathName testNum
+                        (stat_1, result_1) <- runHaskellCode "-O1" filePathName testNum
+                        (stat_2, result_2) <- runHaskellCode "-O2" filePathName testNum
+                        (stat_3, result_3) <- runHaskellCode "-O3" filePathName testNum
+                        putStrLn "--Normal--"
+                        putStrLn stat
+                        putStrLn result
+                        putStrLn "--Optimized 0--"
+                        putStrLn stat_0
+                        putStrLn result_0
+                        putStrLn "--Optimized 1--"
+                        putStrLn stat_1
+                        putStrLn result_1
+                        putStrLn "--Optimized 2--"
+                        putStrLn stat_2
+                        putStrLn result_2
+                        putStrLn "--Optimized 3--"
+                        putStrLn stat_3
+                        putStrLn result_3
+                        putStrLn "===="
+                        putStrLn $ compareResults stat_0 result_0
+                        putStrLn $ compareResults stat result
+                        putStrLn $ compareResults stat_1 result_1
+                        putStrLn $ compareResults stat_2 result_2
+                        putStrLn $ compareResults stat_3 result_3
+                        let statuses = unlines [stat, stat_0, stat_1, stat_2, stat_3]
+                            resultuses = unlines [result, result_0, result_1, result_2, result_3]
+                        return (statuses , "\n" ++ resultuses)
+                      ) [1..numTests]
+  let statisticsFilePath = filePath ++ "_statistics.txt"
+  writeStatistics statisticsFilePath statistics
+  putStrLn $ "Statistics written to file: " ++ statisticsFilePath
 
 insertNumberAfterSlash :: String -> Int -> String
 insertNumberAfterSlash str num = case break (== '/') str of
@@ -74,8 +99,8 @@ insertNumberAfterSlash str num = case break (== '/') str of
 
 main :: IO ()
 main = do
-  let numTests = 10
-      depth = 5
+  let numTests = 10000
+      depth = 2
       filePath = "testes/expressions"
   testMultipleTimes numTests filePath depth
   putStrLn "Testing completed"
