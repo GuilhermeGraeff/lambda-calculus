@@ -11,21 +11,3 @@ structures in code.
 
 
 Error during Haskell code compilation
-
--- Introdução
--- Fundamentação teórica
-    -- geração de código
-    -- teste de propriedade
-    -- ...
--- Mecanismo de geração
-    -- Geração de tipos
-    -- Geração de expressões
--- Validação
-    -- Como compilou...
-    -- comparações...
--- Trabalhos relacionados
---Conclusão
---Author contributions
-
-
-Gui ...x.y....z....Samuel
