@@ -1,3 +1,2 @@
-# An implementation of the lambda-calculus in Haskell.
+# Random Generation of Haskell Programs Applied to Optimization Testing in Compilers
 
-Jajá eu crio isso
